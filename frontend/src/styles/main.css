@@ -1,21 +1,167 @@
-/* styles/main.css */
-.App {
-  text-align: center;
-  font-family: sans-serif;
-  margin-top: 3rem;
+/* Layout generale */
+.app-container {
+  display: flex;
+  height: 100vh;
+
 }
 
-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  background-color: #007bff;
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #0b1e32;
+  overflow-y: auto;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #0b1e32; /* Blu scuro */
+  color: #dbeafe; /* Azzurro chiarissimo */
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s ease, color 0.2s ease;
+  color: #dbeafe;
+}
+
+.sidebar-item:hover {
+  background-color: #123552;
+  color: #7dd3fc; /* azzurro chiaro hover */
+}
+
+.sidebar-item.active {
+  background-color: #164e63;
+  font-weight: bold;
+}
+
+.sidebar-indicator {
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #7dd3fc; /* azzurro chiaro */
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.8rem;
+  fill: currentColor;
+}
+
+/* Dashboard contenitore principale */
+.dashboard {
+  flex: 1;
+  background-color: #0b1e32; /* blu scuro */
+  padding: 2rem;
+  color: #dbeafe;
+  overflow-y: auto;
+}
+
+/* Header e sezioni */
+.section-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #93c5fd; /* azzurro intermedio */
+  margin-bottom: 1rem;
+}
+
+/* Tabella workflow */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #334155;
+  text-align: left;
+  color: #e2e8f0;
+}
+
+/* Pulsanti */
+.button-primary {
+  padding: 0.75rem 1.25rem;
+  background-color: #1e3a8a; /* blu medio */
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
 }
 
-p {
-  margin-top: 1rem;
-  font-weight: bold;
+.button-primary:hover {
+  background-color: #2563eb; /* blu vivo */
 }
+
+/* Icone comuni */
+.kflux-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: fill 0.2s ease;
+}
+
+.kflux-icon:hover {
+  fill: #7dd3fc;
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b1e32;
+  color: #dbeafe;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #1e293b;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-user {
+  font-size: 1rem;
+  color: #7dd3fc;
+}
+

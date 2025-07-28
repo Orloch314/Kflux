@@ -1,0 +1,22 @@
+.scheduler-input {
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+.scheduler-input label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.scheduler-input select {
+  padding: 6px;
+  margin-right: 12px;
+}
+
+.time-config input {
+  padding: 6px;
+  margin-right: 8px;
+}

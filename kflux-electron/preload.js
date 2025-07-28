@@ -1,8 +1,22 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// Elenco dei canali autorizzati per 'invoke'
+const validInvokeChannels = [
+  'get-user-name',
+  'select-folder',
+  'get-workflows-in-folder'
+];
+
+// Espone metodi sicuri al renderer process
 contextBridge.exposeInMainWorld('electron', {
-  // Invoke: comunica con il backend e riceve una risposta
-  invoke: (channel, data) => ipcRenderer.invoke(channel, data),
+  // Invoke: comunica con il backend e riceve una risposta (con whitelist)
+  invoke: (channel, data) => {
+    if (validInvokeChannels.includes(channel)) {
+      return ipcRenderer.invoke(channel, data);
+    } else {
+      console.warn(`❌ Canale IPC non autorizzato: ${channel}`);
+    }
+  },
 
   // Send: invia un messaggio senza aspettare risposta (unidirezionale)
   send: (channel, data) => ipcRenderer.send(channel, data),
@@ -19,3 +33,4 @@ contextBridge.exposeInMainWorld('electron', {
   removeListener: (channel, callback) =>
     ipcRenderer.removeListener(channel, callback)
 });
+

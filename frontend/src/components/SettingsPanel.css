@@ -1,0 +1,24 @@
+.settings-panel {
+  padding: 16px;
+  margin-top: 24px;
+  border-top: 2px solid #ccc;
+  background-color: #fefefe;
+  border-radius: 8px;
+}
+
+.setting-group {
+  margin-bottom: 16px;
+}
+
+.setting-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.setting-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}

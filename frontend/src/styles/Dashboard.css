@@ -1,0 +1,189 @@
+/* Dashboard.css */
+
+.dashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f4f8;
+  min-height: 100vh;
+}
+
+.workflow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #00172f;
+}
+
+/* Pulsanti */
+.button-primary {
+  background-color: #0b477c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-primary:hover {
+  background-color: #08395f;
+}
+
+.button-primary.general-stop {
+  background-color: #d83b01;
+  margin-top: 2rem;
+}
+
+.button-primary.general-stop:hover {
+  background-color: #a5260a;
+}
+
+.small-button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #0b477c;
+  transition: transform 0.1s ease;
+}
+
+.small-button:hover {
+  transform: scale(1.1);
+}
+
+/* Tabella workflow */
+.workflow-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #00172f; /* sfondo pannello */
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  color: #f0f4f8; /* testo chiaro */
+}
+
+.workflow-table th,
+.workflow-table td {
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #33475b;
+}
+
+.workflow-table th {
+  background-color: #002f4b;
+  color: #eaf4fe;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.workflow-row:hover {
+  background-color: #002a45;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Stato */
+.status-message {
+  margin-top: 1.5rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #eaf4fe;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #0b477c;
+  border-radius: 4px;
+}
+
+/* Indicatori di stato */
+.status-indicator {
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.scheduled {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+.running {
+  background-color: #dcfce7;
+  color: #065f46;
+}
+.paused {
+  background-color: #fef9c3;
+  color: #92400e;
+}
+.stopped {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.unknown {
+  background-color: #e5e7eb;
+  color: #6b7280;
+}
+/* Pulsanti azione (Run, Pause, Stop) */
+.trigger-button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border: 2px solid #0b477c;
+  background-color: transparent;
+  color: #0b477c;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.trigger-button:hover {
+  background-color: #0b477c;
+  color: white;
+}
+/* Pulsanti azione (Run, Pause, Stop) */
+.trigger-button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border: 2px solid #0b477c;
+  background-color: transparent;
+  color: #0b477c;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.trigger-button:hover {
+  background-color: #0b477c;
+  color: white;
+}
+.workflow-control-button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border: 2px solid #0b477c;
+  background-color: transparent;
+  color: #0b477c;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.workflow-control-button:hover {
+  background-color: #0b477c;
+  color: white;
+}

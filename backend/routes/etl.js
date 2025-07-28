@@ -1,65 +1,67 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+const express = require('express')
+const router = express.Router()
+const fs = require('fs')
+const path = require('path')
+require('dotenv').config()
 
-const runKnimeWithPath = require('../services/runKnimeWithPath');
-const notify = require('../services/notify');
+const runKnimeWithPath = require('../controllers/runKnimeWithPath')
+const notify = require('../services/notify')
+const WORKFLOWS_PATH = path.join(__dirname, '../data/workflows.json')
 
-router.post('/', async (req, res) => {
-  const { workflowPath } = req.body;
+// ✅ POST /api/etl/:id — Avvia flusso per ID da workflows.json
+router.post('/:id', async (req, res) => {
+  const workflowId = req.params.id
 
-  if (!workflowPath) {
-    console.error('❌ workflowPath mancante');
-    return res.status(400).json({ error: 'Parametro workflowPath richiesto' });
+  let workflows = []
+  try {
+    const raw = fs.readFileSync(WORKFLOWS_PATH)
+    workflows = JSON.parse(raw)
+  } catch (err) {
+    console.error('[K-Flux] ❌ Errore lettura workflows.json:', err.message)
+    return res.status(500).json({ error: 'Errore lettura lista workflow' })
   }
 
-  // ✅ Interpreta workflowPath come percorso assoluto (qualsiasi path locale valido)
-  const fullPath = path.resolve(workflowPath);
+  const flow = workflows.find(f => f.id === workflowId)
 
-  // 🔐 Validazione: la cartella deve esistere
+  if (!flow || !flow.path) {
+    console.error(`❌ Flusso '${workflowId}' non trovato`)
+    return res.status(404).json({ error: 'Workflow non trovato' })
+  }
+
+  const fullPath = path.resolve(flow.path)
   if (!fs.existsSync(fullPath)) {
-    console.error('❌ Cartella non trovata:', fullPath);
+    console.error('❌ Cartella non trovata:', fullPath)
 
     await notify.sendNotification({
-      subject: 'K-Flux - Errore percorso ETL',
+      subject: `K-Flux - Errore percorso ETL [${flow.name}]`,
       message: `Cartella flusso non trovata:\n\n${fullPath}`,
       status: 'error'
-    });
+    })
 
-    return res.status(400).json({ error: 'Cartella del flusso inesistente' });
+    return res.status(400).json({ error: 'Cartella del flusso inesistente' })
   }
 
   try {
-    console.log(`🟢 Avvio flusso KNIME su: ${fullPath}`);
+    console.log(`🟢 Avvio flusso KNIME: ${flow.name}`)
 
-    const result = await runKnimeWithPath(fullPath);
+    const result = await runKnimeWithPath({
+      id: flow.id,
+      name: flow.name,
+      workflowPath: fullPath,
+      trigger: 'manual'
+    })
 
-    await notify.sendNotification({
-      subject: 'K-Flux - Flusso completato',
-      message: `Il flusso è stato eseguito con successo:\n\n${result.output}`,
-      status: 'success'
-    });
-
-    res.status(200).json({
-      message: 'Flusso eseguito correttamente',
-      details: result
-    });
+    res.status(200).json({ message: 'Flusso eseguito correttamente', details: result })
   } catch (err) {
-    console.error('💥 Errore durante il flusso ETL:', err);
+    console.error('💥 Errore durante esecuzione ETL:', err.message)
 
     await notify.sendNotification({
-      subject: 'K-Flux - Errore ETL',
-      message: `Errore durante l'esecuzione:\n\n${err.message}`,
+      subject: `K-Flux - Errore ETL [${flow.name}]`,
+      message: `Errore durante esecuzione:\n\n${err.message}`,
       status: 'error'
-    });
+    })
 
-    res.status(500).json({
-      error: 'Errore durante il flusso ETL',
-      details: err.message
-    });
+    res.status(500).json({ error: 'Errore durante il flusso ETL', details: err.message })
   }
-});
-
-module.exports = router;
+})
+module.exports = router

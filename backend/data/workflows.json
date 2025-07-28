@@ -1,0 +1,16 @@
+[
+  {
+    "id": "wf-1753469238566",
+    "name": "kflux-etl-workflow",
+    "path": "C:\\Users\\Roberto.Riva\\knime-workspace\\kflux-etl-workflow",
+    "schedule": "",
+    "active": false
+  },
+  {
+    "id": "wf-1753471607688",
+    "name": "Cidesa dwh",
+    "path": "C:\\Users\\Roberto.Riva\\knime-workspace\\Cidesa dwh",
+    "schedule": "",
+    "active": false
+  }
+]

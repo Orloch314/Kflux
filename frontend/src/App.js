@@ -1,22 +1,41 @@
-import React from 'react';
-import TriggerButton from './components/TriggerButton';
-import WorkflowPicker from './components/WorkflowPicker'; // ⬅️ aggiunto
-import FolderPicker from './FolderPicker';
+import React, { useState, useEffect } from 'react';
+import Sidebar from './components/Sidebar';
+import DashboardHeader from './components/DashboardHeader';
+import Dashboard from './views/Dashboard';
+import HistoryPanel from './components/HistoryPanel';
+import LogsPanel from './components/LogsPanel';
+import SettingsPanel from './components/SettingsPanel';
+import './styles/main.css';
 
-function App() {
+export default function App() {
+  const [activeView, setActiveView] = useState('dashboard');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    // Recupera il nome utente di sistema tramite Electron
+    window.electron.invoke('get-user-name')
+      .then(setUserName)
+      .catch(() => setUserName(''));
+  }, []);
+
+  const renderContent = () => {
+    switch (activeView) {
+      case 'history': return <HistoryPanel />;
+      case 'logs': return <LogsPanel />;
+      case 'settings': return <SettingsPanel />;
+      default: return <Dashboard />;
+    }
+  };
+
   return (
-    <div className="App" style={{ padding: '2rem' }}>
-      <h1>K-Flux Alpha</h1>
-
-      {/* ⬇️ Selettore visuale per la cartella KNIME */}
-      <WorkflowPicker />
-
-      <hr style={{ margin: '2rem 0' }} />
-
-      {/* ⬇️ Bottone per trigger manuale (se esiste già e ti serve) */}
-      <TriggerButton />
+    <div className="app-container">
+      <Sidebar onSelect={setActiveView} active={activeView} />
+      <div className="main-area">
+        <DashboardHeader userName={userName} />
+        <div className="main-content">
+          {renderContent()}
+        </div>
+      </div>
     </div>
   );
 }
-
-export default App;

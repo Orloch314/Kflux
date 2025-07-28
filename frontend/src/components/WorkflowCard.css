@@ -1,0 +1,21 @@
+.workflow-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+  background-color: #fff;
+}
+.workflow-card.running { border-left: 5px solid green; }
+.workflow-card.paused  { border-left: 5px solid orange; }
+.workflow-card.stopped { border-left: 5px solid red; }
+.workflow-card.scheduled { border-left: 5px solid gray; }
+
+.button-group button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.run-btn    { background: green; color: white; }
+.pause-btn  { background: orange; color: white; }
+.stop-btn   { background: red; color: white; }

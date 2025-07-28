@@ -1,0 +1,98 @@
+[
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T18:48:37.805Z",
+    "startedAt": "2025-07-25T18:47:25.279Z",
+    "finishedAt": "2025-07-25T18:48:37.805Z",
+    "duration": 73,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T18:48:52.229Z",
+    "startedAt": "2025-07-25T18:48:41.319Z",
+    "finishedAt": "2025-07-25T18:48:52.229Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T18:50:01.178Z",
+    "startedAt": "2025-07-25T18:49:49.830Z",
+    "finishedAt": "2025-07-25T18:50:01.178Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T18:56:01.364Z",
+    "startedAt": "2025-07-25T18:55:50.441Z",
+    "finishedAt": "2025-07-25T18:56:01.364Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T19:00:20.475Z",
+    "startedAt": "2025-07-25T19:00:09.692Z",
+    "finishedAt": "2025-07-25T19:00:20.475Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T19:24:41.742Z",
+    "startedAt": "2025-07-25T19:24:30.488Z",
+    "finishedAt": "2025-07-25T19:24:41.742Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T19:25:38.673Z",
+    "startedAt": "2025-07-25T19:25:28.160Z",
+    "finishedAt": "2025-07-25T19:25:38.673Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  },
+  {
+    "id": "wf-1753469238566",
+    "workflow": "kflux-etl-workflow",
+    "timestamp": "2025-07-25T20:59:21.034Z",
+    "startedAt": "2025-07-25T20:59:09.787Z",
+    "finishedAt": "2025-07-25T20:59:21.034Z",
+    "duration": 11,
+    "trigger": "manual",
+    "status": "success",
+    "exitCode": 0,
+    "notes": "Flusso completato senza errori"
+  }
+]

@@ -1,0 +1,44 @@
+.status-indicator {
+  font-weight: 500;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: inline-block;
+  min-width: 110px;
+  text-align: center;
+}
+
+.status-indicator.scheduled {
+  background-color: #e2e3e5;
+  color: #555;
+}
+
+.status-indicator.running {
+  background-color: #d1f0e1;
+  color: #0b7a47;
+}
+
+.status-indicator.paused {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-indicator.stopped {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-indicator.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-indicator.error {
+  background-color: #f8d7da;
+  color: #b71c1c;
+}
+
+.status-indicator.unknown {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
