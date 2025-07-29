@@ -41,38 +41,50 @@ router.post('/', (req, res) => {
 
     workflows.push(newWorkflow);
     fs.writeFileSync(WORKFLOWS_PATH, JSON.stringify(workflows, null, 2));
-
     res.status(201).json({ message: '✅ Workflow salvato correttamente' });
   } catch (err) {
     console.error('[K-Flux] ❌ Errore salvataggio workflow:', err.message);
-    res.status(500).json({ error: 'Errore salvataggio workflow' });
+    if (!res.headersSent)
+      res.status(500).json({ error: 'Errore salvataggio workflow' });
   }
+});
 
-  router.post('/', (req, res) => {
+// ✅ PUT: aggiorna uno specifico workflow (es. per schedule)
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const updated = req.body;
+
   try {
-    const newWorkflow = req.body;
-
-    // Validazione base
-    if (!newWorkflow.path || !fs.existsSync(newWorkflow.path)) {
-      return res.status(400).json({ error: 'Percorso non valido o inesistente' });
-    }
-
     let workflows = [];
     if (fs.existsSync(WORKFLOWS_PATH)) {
       const raw = fs.readFileSync(WORKFLOWS_PATH);
       workflows = JSON.parse(raw);
     }
 
-    workflows.push(newWorkflow);
+    const index = workflows.findIndex(wf => wf.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Workflow non trovato' });
+    }
+
+    workflows[index] = { ...workflows[index], ...updated };
+
     fs.writeFileSync(WORKFLOWS_PATH, JSON.stringify(workflows, null, 2));
+    res.status(200).json({ message: '✅ Workflow aggiornato correttamente' });
 
-    res.status(201).json({ message: 'Workflow salvato' });
+    // Aggiorna i cronjob in background
+    setImmediate(() => {
+      try {
+        require('../scheduler/knimeScheduler').updateCronJobs();
+      } catch (cronErr) {
+        console.error('[K-Flux] ⚠️ Errore aggiornamento cron jobs:', cronErr.message);
+      }
+    });
+
   } catch (err) {
-    console.error('[K-Flux] ❌ Errore salvataggio workflow:', err.message);
-    res.status(500).json({ error: 'Errore salvataggio workflow' });
+    console.error('[K-Flux] ❌ Errore aggiornamento workflow:', err.message);
+    if (!res.headersSent)
+      res.status(500).json({ error: 'Errore aggiornamento workflow' });
   }
-});
-
 });
 
 module.exports = router;

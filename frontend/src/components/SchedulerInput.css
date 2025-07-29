@@ -1,22 +1,46 @@
 .scheduler-input {
   margin: 12px 0;
-  padding: 10px;
-  border: 1px dashed #ccc;
-  border-radius: 6px;
-  background-color: #f9f9f9;
+  padding: 12px;
+  border: 1px solid #334155; /* Colore simile ai bordi della tabella */
+  border-radius: 8px; /* Arrottondiamo i bordi */
+  background-color: #0b1e32; /* Stesso colore di fondo della dashboard */
+  color: #dbeafe; /* Azzurro chiaro per il testo */
 }
 
 .scheduler-input label {
   font-weight: bold;
   margin-right: 8px;
+  color: #93c5fd; /* Azzurro intermedio per il label */
 }
 
-.scheduler-input select {
-  padding: 6px;
+.scheduler-input select,
+.scheduler-input input[type="time"],
+.scheduler-input input[type="number"] {
+  padding: 8px;
   margin-right: 12px;
+  border-radius: 6px;
+  background-color: #1e293b; /* Blu scuro per il background dei controlli */
+  border: 1px solid #334155; /* Stessa tonalità di bordo delle tabelle */
+  color: #dbeafe; /* Colore testo azzurro chiaro */
+}
+
+.scheduler-input select:focus,
+.scheduler-input input[type="time"]:focus,
+.scheduler-input input[type="number"]:focus {
+  outline: none;
+  border-color: #7dd3fc; /* Azzurro chiaro al focus */
+  box-shadow: 0 0 5px rgba(125, 211, 252, 0.5); /* Effetto al focus */
+}
+
+.time-config {
+  display: flex;
+  align-items: center;
 }
 
 .time-config input {
-  padding: 6px;
-  margin-right: 8px;
+  margin-top: 8px;
+}
+
+.time-config input[type="number"] {
+  width: 60px; /* Limitiamo la larghezza per i numeri */
 }

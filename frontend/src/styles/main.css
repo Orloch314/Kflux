@@ -1,9 +1,27 @@
 /* Layout generale */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 .app-container {
   display: flex;
+  flex-direction: row;
   height: 100vh;
-
+  width: 100vw;
+  overflow-x: hidden;
 }
+
 
 .main-area {
   flex: 1;

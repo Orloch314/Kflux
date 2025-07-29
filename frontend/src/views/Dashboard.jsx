@@ -9,66 +9,78 @@ export default function Dashboard() {
   const [workflows, setWorkflows] = useState([]);
   const [statusMessage, setStatusMessage] = useState('');
 
-  // 🔄 Carica i workflow già presenti
   useEffect(() => {
-    axios.get('http://localhost:5000/api/workflows')
-      .then((res) => {
-        const loaded = res.data.map(wf => ({
-          ...wf,
-          status: 'idle',
-          lastDuration: '--'
-        }));
-        setWorkflows(loaded);
-      })
-      .catch((err) => {
-        console.error('Errore caricamento workflow:', err.message);
-      });
+    const fetchWorkflowsAndHistory = async () => {
+      try {
+        const [wfRes, histRes] = await Promise.all([
+          axios.get('http://localhost:5000/api/workflows'),
+          axios.get('http://localhost:5000/api/history'),
+        ]);
+
+        const workflows = wfRes.data;
+        const history = histRes.data;
+
+        const enhanced = workflows.map(wf => {
+          const last = history
+            .filter(h => h.id === wf.id)
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+
+          return {
+            ...wf,
+            status: 'idle',
+            scheduleMode: wf.scheduleMode || 'manual',
+            scheduleTime: wf.scheduleTime || '08:00',
+            lastDuration: last ? `${last.duration}s` : '--',
+          };
+        });
+
+        setWorkflows(enhanced);
+      } catch (err) {
+        console.error('❌ Errore caricamento dati:', err.message);
+      }
+    };
+
+    fetchWorkflowsAndHistory();
   }, []);
 
-  // ✅ Aggiunge un nuovo processo
   const handleAddWorkflow = async () => {
-  if (!window.electron?.invoke) return alert('Electron non disponibile');
+    if (!window.electron?.invoke) return alert('Electron non disponibile');
 
-  let folderPath = await window.electron.invoke('select-folder');
-  if (!folderPath) return;
+    let folderPath = await window.electron.invoke('select-folder');
+    if (!folderPath) return;
 
-  // Se è un file .knwf, risali alla cartella
-  if (folderPath.endsWith('.knwf')) {
-    setStatusMessage('⚠️ Hai selezionato un file .knwf. Uso la cartella padre.');
-    folderPath = folderPath.replace(/[\\/][^\\/]+\.knwf$/, '');
-  }
+    if (folderPath.endsWith('.knwf')) {
+      setStatusMessage('⚠️ Hai selezionato un file .knwf. Uso la cartella padre.');
+      folderPath = folderPath.replace(/[\\/][^\\/]+\.knwf$/, '');
+    }
 
-  if (!window.electron?.invoke) return alert('Electron non disponibile');
+    const folderName = folderPath.split(/[\\/]/).pop();
 
-  const folderName = folderPath.split(/[\\/]/).pop();
+    const newWorkflow = {
+      id: `wf-${Date.now()}`,
+      name: folderName,
+      path: folderPath,
+      scheduleMode: 'manual',
+      scheduleTime: '08:00',
+      active: false,
+    };
 
-  const newWorkflow = {
-    id: `wf-${Date.now()}`,
-    name: folderName,
-    path: folderPath,
-    schedule: '',
-    active: false
+    try {
+      await axios.post('http://localhost:5000/api/workflows', newWorkflow);
+      setWorkflows((prev) => [...prev, { ...newWorkflow, status: 'idle', lastDuration: '--' }]);
+      setStatusMessage(`✅ Aggiunto ${newWorkflow.name}`);
+    } catch (err) {
+      console.error('Errore salvataggio workflow:', err.message);
+      setStatusMessage('❌ Errore salvataggio workflow');
+    }
   };
 
-  try {
-    await axios.post('http://localhost:5000/api/workflows', newWorkflow);
-
-    setWorkflows((prev) => [...prev, { ...newWorkflow, status: 'idle', lastDuration: '--' }]);
-    setStatusMessage(`✅ Aggiunto ${newWorkflow.name}`);
-  } catch (err) {
-    console.error('Errore salvataggio workflow:', err.message);
-    setStatusMessage('❌ Errore salvataggio workflow');
-  }
-};
-
-  // ✅ Cambia la cartella di un processo esistente
   const handleChangeFolder = async (id) => {
     if (!window.electron?.invoke) return alert('Electron non disponibile');
     const folderPath = await window.electron.invoke('select-folder');
     if (!folderPath) return;
 
     const folderName = folderPath.split(/[\\/]/).pop();
-
     setWorkflows((prev) =>
       prev.map((wf) =>
         wf.id === id ? { ...wf, path: folderPath, name: folderName } : wf
@@ -76,7 +88,6 @@ export default function Dashboard() {
     );
   };
 
-  // ✅ Aggiorna lo stato (es. running, paused...)
   const updateStatus = (id, status) => {
     setWorkflows((prev) =>
       prev.map((wf) =>
@@ -85,16 +96,13 @@ export default function Dashboard() {
     );
   };
 
-  // ✅ Esegue un processo
   const runWorkflow = async (id) => {
     const wf = workflows.find((w) => w.id === id);
     if (!wf) return;
 
     try {
       updateStatus(id, 'running');
-
       const res = await axios.post(`http://localhost:5000/api/etl/${id}`);
-
       setStatusMessage(`✅ ${wf.name}: ${res.data.message}`);
       updateStatus(id, 'idle');
     } catch (err) {
@@ -104,19 +112,16 @@ export default function Dashboard() {
     }
   };
 
-  // ✅ Mette in pausa
   const pauseWorkflow = (id) => {
     updateStatus(id, 'paused');
     setStatusMessage(`⏸️ Workflow ${id} messo in pausa.`);
   };
 
-  // ✅ Interrompe singolarmente
   const stopWorkflow = (id) => {
     updateStatus(id, 'stopped');
     setStatusMessage(`⛔ Workflow ${id} interrotto.`);
   };
 
-  // ✅ Interrompe tutti
   const generalStop = () => {
     const updated = workflows.map((wf) => ({ ...wf, status: 'stopped' }));
     setWorkflows(updated);
@@ -142,7 +147,7 @@ export default function Dashboard() {
               <th>Schedule</th>
               <th>Last Duration</th>
               <th>Status</th>
-              <th>Azioni</th>
+              <th>Actions</th>
               <th>📁</th>
             </tr>
           </thead>
@@ -150,11 +155,41 @@ export default function Dashboard() {
             {workflows.map((wf) => (
               <tr key={wf.id} className="workflow-row">
                 <td>📁 {wf.name}</td>
-                <td>{wf.schedule}</td>
-                <td>{wf.lastDuration}</td>
                 <td>
-                  <StatusIndicator status={wf.status} />
+                  <SchedulerInput
+                    initialMode={wf.scheduleMode}
+                    initialTime={wf.scheduleTime}
+                    initialDays={wf.daysInterval || 1}
+                    onScheduleChange={(cronExpr, mode, time, daysInterval) => {
+                      const updatedWf = {
+                        ...wf,
+                        schedule: cronExpr,
+                        scheduleMode: mode,
+                        scheduleTime: time,
+                        daysInterval,
+                        active: mode !== 'manual',
+                      };
+
+                      axios.put(`http://localhost:5000/api/workflows/${wf.id}`, updatedWf)
+                        .then(() => {
+                          setStatusMessage(`✅ Orario aggiornato per ${wf.name}`);
+                          setWorkflows(prev =>
+                            prev.map(w =>
+                              w.id === wf.id
+                                ? { ...w, scheduleMode: mode, scheduleTime: time }
+                                : w
+                            )
+                          );
+                        })
+                        .catch(err => {
+                          console.error('Errore aggiornamento scheduler:', err.message);
+                          setStatusMessage(`❌ Errore aggiornamento orario per ${wf.name}`);
+                        });
+                    }}
+                  />
                 </td>
+                <td>{wf.lastDuration}</td>
+                <td><StatusIndicator status={wf.status} /></td>
                 <td className="workflow-actions">
                   <TriggerButton label="Run" onClick={() => runWorkflow(wf.id)} />
                   <TriggerButton
@@ -178,21 +213,14 @@ export default function Dashboard() {
         </table>
       )}
 
-      <SchedulerInput />
-
       {workflows.length > 0 && (
-        <button
-          className="button-primary general-stop"
-          onClick={generalStop}
-        >
+        <button className="button-primary general-stop" onClick={generalStop}>
           ⛔ General Stop
         </button>
       )}
 
       {statusMessage && (
-        <p className="status-message">
-          {statusMessage}
-        </p>
+        <p className="status-message">{statusMessage}</p>
       )}
     </div>
   );

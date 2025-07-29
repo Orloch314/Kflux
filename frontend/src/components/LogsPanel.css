@@ -1,52 +1,90 @@
+/* Layout del pannello logs */
 .logs-panel {
-  padding: 16px;
-  background-color: #fdfdfd;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 20px 16px 16px 16px; /* ↑ padding-top aumentato */
   margin-top: 24px;
-}
-
-.logs-panel h3 {
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.log-list {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: 16px;
-  border-top: 1px solid #eee;
-}
-
-.log-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  background-color: #0b1e32;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #dbeafe;
   display: flex;
   flex-direction: column;
 }
 
+
+/* Titolo del pannello */
+.logs-panel h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px; /* Aggiustamento per allineamento verticale */
+  margin-bottom: 10px;
+  color: #93c5fd; /* Azzurro per il titolo */
+}
+
+/* Pulsante per pulire i log */
+.logs-panel button {
+  align-self: flex-start;
+  padding: 0.6rem 1rem;
+  background-color: #1e3a8a; /* Blu medio */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.logs-panel button:hover {
+  background-color: #2563eb; /* Blu vivo */
+}
+
+/* Lista dei log */
+.log-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 2rem;
+  border-top: 1px solid #1e293b; /* Linea divisoria */
+  padding-top: 1rem;
+}
+
+/* Singolo log */
+.log-item {
+  padding: 12px;
+  margin-bottom: 1rem;
+  background-color: #1f2937; /* Grigio scuro */
+  border-radius: 6px;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s ease;
+}
+
+/* Tipologia di log */
 .log-item span {
   font-size: 0.85rem;
-  color: #666;
+  color: #93c5fd; /* Azzurro chiaro */
 }
 
 .log-item strong {
   font-weight: bold;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .log-item p {
-  margin: 6px 0 0;
+  margin-top: 6px;
+  font-size: 0.9rem;
 }
 
-/* Tipologie */
+/* Log di errore */
 .log-item.error {
-  background-color: #ffe5e5;
-  border-left: 4px solid #cc0000;
+  background-color: #7f1d1d; /* Rosso scuro */
+  border-left: 6px solid #cc0000;
+  color: #fff;
 }
 
+/* Log di warning */
 .log-item.warning {
-  background-color: #fffbe5;
-  border-left: 4px solid #ff9900;
+  background-color: #fbbf24; /* Giallo scuro */
+  border-left: 6px solid #ff9900;
+  color: #1f2937; /* Grigio scuro */
 }

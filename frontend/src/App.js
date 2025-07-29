@@ -10,20 +10,37 @@ import './styles/main.css';
 export default function App() {
   const [activeView, setActiveView] = useState('dashboard');
   const [userName, setUserName] = useState('');
+  const [historyData, setHistoryData] = useState([]);
+  const [historyDays, setHistoryDays] = useState(1);
 
   useEffect(() => {
-    // Recupera il nome utente di sistema tramite Electron
     window.electron.invoke('get-user-name')
       .then(setUserName)
       .catch(() => setUserName(''));
-  }, []);
+    }, []);
+
+    useEffect(() => {
+  window.electron.invoke('get-history-data')
+    .then(data => {
+      console.log('[FRONTEND] 🧾 Ricevuti', data.length, 'elementi da history.json');
+      setHistoryData(data);
+    })
+    .catch((err) => {
+      console.error('[FRONTEND] ❌ Errore nel recupero della history:', err);
+      setHistoryData([]);
+    });
+}, []);
 
   const renderContent = () => {
     switch (activeView) {
-      case 'history': return <HistoryPanel />;
-      case 'logs': return <LogsPanel />;
-      case 'settings': return <SettingsPanel />;
-      default: return <Dashboard />;
+      case 'history':
+        return <HistoryPanel history={historyData} historyDays={historyDays} />;
+      case 'logs':
+        return <LogsPanel />;
+      case 'settings':
+        return <SettingsPanel historyDays={historyDays} setHistoryDays={setHistoryDays} />;
+      default:
+        return <Dashboard />;
     }
   };
 

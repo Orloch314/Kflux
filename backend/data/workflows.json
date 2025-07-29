@@ -1,16 +1,14 @@
 [
   {
-    "id": "wf-1753469238566",
+    "id": "wf-1753708635355",
     "name": "kflux-etl-workflow",
     "path": "C:\\Users\\Roberto.Riva\\knime-workspace\\kflux-etl-workflow",
-    "schedule": "",
-    "active": false
-  },
-  {
-    "id": "wf-1753471607688",
-    "name": "Cidesa dwh",
-    "path": "C:\\Users\\Roberto.Riva\\knime-workspace\\Cidesa dwh",
-    "schedule": "",
-    "active": false
+    "scheduleMode": "daily",
+    "scheduleTime": "13:24",
+    "active": true,
+    "status": "idle",
+    "lastDuration": "32s",
+    "schedule": "24 13 * * *",
+    "daysInterval": 1
   }
 ]

@@ -1,15 +1,17 @@
 .history-panel {
   padding: 16px;
-  background-color: #fcfcfc;
+  background-color: #0b1e32; /* Colore scuro di sfondo */
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #334155; /* Colore chiaro per il bordo */
   margin-top: 24px;
+  color: #dbeafe; /* Colore azzurro chiaro per il testo */
 }
 
 .history-panel h3 {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 12px;
+  color: #93c5fd; /* Colore azzurro chiaro per il titolo */
 }
 
 .history-panel ul {
@@ -22,30 +24,31 @@
 
 .history-item {
   padding: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #334155; /* Colore per separatori tra gli item */
   font-size: 0.95rem;
+  background-color: #1e293b; /* Colore più chiaro per le voci */
 }
 
 .history-item:nth-child(even) {
-  background-color: #f6f6f6;
+  background-color: #123552; /* Aggiungi una leggera differenza per le righe pari */
 }
 
 .history-header {
   font-weight: bold;
   font-size: 1rem;
-  color: #333;
+  color: #dbeafe; /* Colore chiaro per il testo */
   margin-bottom: 4px;
 }
 
 .history-meta {
   font-size: 0.88rem;
-  color: #555;
+  color: #dbeafe; /* Colore chiaro per meta info */
   margin-bottom: 6px;
   line-height: 1.4;
 }
 
 .history-notes {
-  background-color: #ffffdd;
+  background-color: #2f7d87;
   padding: 6px;
   border-left: 4px solid #ffcc00;
   font-size: 0.85rem;
@@ -59,10 +62,11 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #0078d4;
+  background-color: #1e3a8a; /* Blu medio per il pulsante */
   color: white;
+  font-weight: bold;
 }
 
 .history-panel button:hover {
-  background-color: #005fa3;
+  background-color: #2563eb; /* Blu vivo per hover */
 }

@@ -1,9 +1,10 @@
 .settings-panel {
   padding: 16px;
   margin-top: 24px;
-  border-top: 2px solid #ccc;
-  background-color: #fefefe;
+  border-top: 2px solid #334155; /* simile a HistoryPanel */
+  background-color: #0b1e32; /* sfondo scuro */
   border-radius: 8px;
+  color:  #93c5fd; /* testo azzurro chiaro */
 }
 
 .setting-group {
@@ -14,11 +15,35 @@
   display: block;
   font-weight: bold;
   margin-bottom: 6px;
+  color: #93c5fd; /* simile a titolo HistoryPanel */
 }
 
 .setting-group input {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #334155; /* stesso bordo */
   border-radius: 4px;
+  background-color: #1e293b; /* sfondo input */
+  color: #dbeafe; /* testo input */
+}
+
+.setting-group input:focus {
+  outline: none;
+  border-color: #2563eb; /* colore blu vivo per focus */
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+.settings-panel button {
+  margin-top: 12px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #1e3a8a;
+  color: white;
+  font-weight: bold;
+}
+
+.settings-panel button:hover {
+  background-color: #2563eb;
 }
