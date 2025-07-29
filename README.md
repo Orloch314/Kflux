@@ -33,10 +33,10 @@ It provides scheduling, logging, and execution history via a modern UI built wit
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/kflux.git
+git clone https://github.com/Orloch314/kflux.git
 
 # 1. Clone the repository
-git clone https://github.com/your-username/kflux.git
+git clone https://github.com/Orloch314/kflux.git
 cd kflux
 
 # 2. Start the backend (Node.js server)
