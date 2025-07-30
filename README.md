@@ -39,19 +39,36 @@ git clone https://github.com/Orloch314/kflux.git
 git clone https://github.com/Orloch314/kflux.git
 cd kflux
 
-# 2. Start the backend (Node.js server)
+# 2. Install % start the backend (Node.js server)
 cd backend
+Nnpm install
 node server.js
 
+Don't change any file
 
-# 3. In a separate terminal, start the Electron frontend
-cd ../Kflux-electron
+
+# 2. Install the frontend (Node.js server)
+cd frontend
+npm install
+
+Don't change any file, don't start the frontend
+
+
+# 3. In a separate terminal, INSTALL & start the Electron frontend
+cd Kflux-electron
+npm install --save-dev electron
 npm start
+
+Don't change any file
 
 ⚙️ Configuration
 Before use, configure:
 
 KNIME executable path (e.g. C:\Program Files\KNIME\knime.exe)
+Change the workflow you may see to yours
+Delete the contents of backend/data/logs.json and backend/data/history.json
+
+Notifications via email and MS Teams are not working at the moment
 
 📄 License
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
