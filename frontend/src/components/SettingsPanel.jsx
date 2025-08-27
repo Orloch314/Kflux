@@ -5,44 +5,80 @@ export default function SettingsPanel({ historyDays, setHistoryDays }) {
   const [email, setEmail] = useState('');
   const [teamsUrl, setTeamsUrl] = useState('');
   const [daysInput, setDaysInput] = useState(historyDays);
-  const [historyData, setHistoryData] = useState([]); // Stato per la cronologia filtrata
-  const [loading, setLoading] = useState(false); // Stato per il caricamento
+  const [historyData, setHistoryData] = useState([]); 
+  const [loading, setLoading] = useState(false); 
 
-  // Effetto per sincronizzare i giorni
+  // Nuovi stati
+  const [knimePath, setKnimePath] = useState('');
+  const [smtpHost, setSmtpHost] = useState('');
+  const [smtpPort, setSmtpPort] = useState('');
+  const [smtpUser, setSmtpUser] = useState('');
+  const [smtpPass, setSmtpPass] = useState('');
+
   useEffect(() => {
-    setDaysInput(historyDays); // Sincronizza i giorni di storico all'avvio
+    setDaysInput(historyDays);
   }, [historyDays]);
 
-  // Funzione per inviare i giorni al backend e ottenere i dati filtrati
   const fetchHistoryData = async (days) => {
-    setLoading(true); // Attiva lo stato di caricamento
-
+    setLoading(true);
     try {
       const data = await window.electronAPI.getHistoryData(days);
-      
-      // Verifica che i dati esistano
       if (data && Array.isArray(data)) {
         const dataWithNumbers = data.map((item, index) => ({
           ...item,
-          number: index + 1, // Aggiungi il numero di sequenza
+          number: index + 1,
         }));
-        setHistoryData(dataWithNumbers); // Salva i dati ricevuti con i numeri
+        setHistoryData(dataWithNumbers);
       }
     } catch (error) {
       console.error("Errore durante il recupero dei dati:", error);
     } finally {
-      setLoading(false); // Disattiva lo stato di caricamento
+      setLoading(false);
     }
   };
 
-  // Gestore del cambio di giorni
   const handleDaysChange = (e) => {
     const val = Number(e.target.value);
     setDaysInput(val);
 
     if (val >= 1 && val <= 30) {
-      setHistoryDays(val); // Aggiorna il valore globale dei giorni
-      fetchHistoryData(val); // Invia i giorni al backend per ottenere i dati filtrati
+      setHistoryDays(val);
+      fetchHistoryData(val);
+    }
+  };
+
+  // Funzione per aprire dialog e scegliere path KNIME
+  const handleSelectKnimePath = async () => {
+    try {
+      const selectedPath = await window.electronAPI.openFileDialog();
+      if (selectedPath) {
+        setKnimePath(selectedPath);
+      }
+    } catch (err) {
+      console.error("Errore selezione path:", err);
+    }
+  };
+
+  // Salvataggio configurazione
+  const handleSave = async () => {
+    if (!window.confirm("⚠️ Stai sovrascrivendo le configurazioni esistenti, procedere?")) {
+      return;
+    }
+    const config = {
+      KNIME_PATH: knimePath,
+      SMTP_HOST: smtpHost,
+      SMTP_PORT: smtpPort,
+      SMTP_USER: smtpUser,
+      SMTP_PASS: smtpPass,
+      NOTIFY_EMAIL: email,
+      TEAMS_WEBHOOK: teamsUrl,
+    };
+    try {
+      await window.electronAPI.saveSettings(config);
+      alert("✅ Configurazioni salvate con successo");
+    } catch (err) {
+      console.error("Errore salvataggio configurazioni:", err);
+      alert("❌ Errore durante il salvataggio");
     }
   };
 
@@ -50,6 +86,7 @@ export default function SettingsPanel({ historyDays, setHistoryDays }) {
     <div className="settings-panel">
       <h3>🔧 Configurazioni notifiche</h3>
 
+      {/* Email destinatario */}
       <div className="setting-group">
         <label>Email di notifica:</label>
         <input
@@ -60,6 +97,7 @@ export default function SettingsPanel({ historyDays, setHistoryDays }) {
         />
       </div>
 
+      {/* Teams */}
       <div className="setting-group">
         <label>Teams webhook URL:</label>
         <input
@@ -70,6 +108,66 @@ export default function SettingsPanel({ historyDays, setHistoryDays }) {
         />
       </div>
 
+      {/* KNIME Path */}
+      <div className="setting-group">
+        <label>KNIME Path:</label>
+        <div className="path-selector">
+          <input
+            type="text"
+            value={knimePath}
+            readOnly
+            placeholder="Seleziona il path KNIME"
+          />
+          <button onClick={handleSelectKnimePath}>Sfoglia...</button>
+        </div>
+      </div>
+
+      {/* SMTP Settings */}
+      <fieldset className="smtp-section">
+        <legend>📧 Impostazioni SMTP</legend>
+
+        <div className="setting-group">
+          <label>Host:</label>
+          <input
+            type="text"
+            value={smtpHost}
+            onChange={(e) => setSmtpHost(e.target.value)}
+            placeholder="smtp.server.com"
+          />
+        </div>
+
+        <div className="setting-group">
+          <label>Porta:</label>
+          <input
+            type="number"
+            value={smtpPort}
+            onChange={(e) => setSmtpPort(e.target.value)}
+            placeholder="587"
+          />
+        </div>
+
+        <div className="setting-group">
+          <label>User:</label>
+          <input
+            type="text"
+            value={smtpUser}
+            onChange={(e) => setSmtpUser(e.target.value)}
+            placeholder="user@dominio.com"
+          />
+        </div>
+
+        <div className="setting-group">
+          <label>Password:</label>
+          <input
+            type="password"
+            value={smtpPass}
+            onChange={(e) => setSmtpPass(e.target.value)}
+            placeholder="********"
+          />
+        </div>
+      </fieldset>
+
+      {/* Giorni di storico */}
       <div className="setting-group">
         <label>Giorni di storico da visualizzare:</label>
         <input
@@ -82,11 +180,12 @@ export default function SettingsPanel({ historyDays, setHistoryDays }) {
         <small>(Mostrerà i flussi completati negli ultimi {daysInput} giorni)</small>
       </div>
 
-      {/* Se i dati sono in caricamento, mostriamo un indicatore di caricamento */}
       {loading && <div className="loading-message">Caricamento...</div>}
 
-       {/* Mostra la lista dei flussi con il numero */}
-       
+      {/* Bottone salva */}
+      <div className="actions">
+        <button onClick={handleSave}>OK</button>
+      </div>
     </div>
-   );
+  );
 }

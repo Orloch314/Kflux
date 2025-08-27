@@ -9,12 +9,15 @@ const path = require('path');
 const etlRoutes = require('./routes/etl');
 const workflowsRoute = require('./routes/workflows');
 const historyRouter = require('./routes/history');
+//const notify = require('./services/notify');
 
 const app = express();
 
 // 🧰 Middleware globali
 app.use(cors());
 app.use(express.json());
+
+///app.use('./services/notify', notify);
 
 // Rotta per ottenere la cronologia
 app.use('/api/history', historyRouter);

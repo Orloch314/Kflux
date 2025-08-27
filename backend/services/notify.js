@@ -8,6 +8,8 @@ async function sendNotification({ subject, message, status = 'info' }) {
   const smtpPort = process.env.SMTP_PORT;
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
+  const notifyEmail = process.env.NOTIFY_EMAIL;
+
 
   // Crea il trasportatore SMTP
   const transporter = nodemailer.createTransport({
@@ -22,8 +24,8 @@ async function sendNotification({ subject, message, status = 'info' }) {
 
   const mailOptions = {
     from: smtpUser,
-    to: smtpUser, // Puoi usare una lista di destinatari
-    subject: subject,
+    to: notifyEmail || smtpUser,
+    subject,
     text: message
   };
 

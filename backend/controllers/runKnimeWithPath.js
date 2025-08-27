@@ -81,13 +81,13 @@ function runKnimeWithPath({ id, name, workflowPath, trigger = 'manual' }) {
       })
 
       await notify.sendNotification({
-        subject: `K-Flux - Flusso completato [${name}]`,
-        message: `Il flusso è stato eseguito con successo in ${duration} secondi.\n\nOutput:\n${stdout}`,
+        subject: `K-Flux - Flujo ejecutado [${name}]`,
+        message: `El flujo ha sido ejectutado en ${duration} segundos.\n\nOutput:\n${stdout}`,
         status: 'success'
       })
 
       resolve({
-        message: 'Flusso eseguito correttamente',
+        message: 'Flujo ejecutado correctamente',
         output: stdout,
         duration,
         startedAt,
