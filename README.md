@@ -41,7 +41,7 @@ cd kflux
 
 # 2. Install % start the backend (Node.js server)
 cd backend
-Nnpm install
+Npm install
 node server.js
 
 Don't change any file
